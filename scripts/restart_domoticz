@@ -1,6 +1,19 @@
 #!/bin/sh
 
-sudo service domoticz.sh stop
-echo "please standby... (waiting 8 seconds)"
-sleep 8
-sudo service domoticz.sh start
+# Try systemd first, else check service.
+if [ `ps -p1 -o comm=` = systemd ]
+then
+    sudo systemctl stop domoticz.service
+    echo "please standby... (waiting 8 seconds)"
+    sleep 8
+    sudo systemctl start domoticz.service
+  elif [ `which service` ]
+  then
+    sudo service domoticz.sh stop
+    echo "please standby... (waiting 8 seconds)"
+    sleep 8
+    sudo service domoticz.sh start
+  else
+        echo "No supported init process management tool like service or systemctl available"
+fi
+

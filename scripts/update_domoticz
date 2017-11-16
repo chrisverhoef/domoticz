@@ -18,11 +18,20 @@ if [ ${OS} = "darwin" ]; then
   echo "Please standby ... (waiting 15 seconds)"
   sleep 15
   launchctl load /System/Library/LaunchAgents/com.domoticz.server.plist
-else
-  sudo service domoticz.sh stop
-  systemctl stop domoticz.service
-  echo "please standby... (waiting 15 seconds)"
-  sleep 15
-  sudo service domoticz.sh start
-  systemctl start domoticz.service
+# Try systemd first, else check service.
+elif [ `ps -p1 -o comm=` = systemd ]
+then
+    sudo systemctl stop domoticz.service
+    echo "please standby... (waiting 15 seconds)"
+    sleep 15
+    sudo systemctl start domoticz.service
+  elif [ `which service` ]
+  then
+    sudo service domoticz.sh stop
+    echo "please standby... (waiting 15 seconds)"
+    sleep 15
+    sudo service domoticz.sh start
+  else
+        echo "No supported init process management tool like service or systemctl available"
 fi
+
