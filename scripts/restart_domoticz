@@ -1,19 +1,11 @@
 #!/bin/sh
 
-# Try systemd first, else check service.
-if [ `ps -p1 -o comm=` = systemd ]
+# Let the process management of Linux take care of the restart so no root privileges are needed.
+if pkill domoticz
 then
-    sudo systemctl stop domoticz.service
-    echo "please standby... (waiting 8 seconds)"
-    sleep 8
-    sudo systemctl start domoticz.service
-  elif [ `which service` ]
-  then
-    sudo service domoticz.sh stop
-    echo "please standby... (waiting 8 seconds)"
-    sleep 8
-    sudo service domoticz.sh start
-  else
-        echo "No supported init process management tool like service or systemctl available"
+    echo "Initiated the restart of the domoticz service"
+else
+    echo "Couldn't find the running  domoticz service named: domoticz"
+
 fi
 
