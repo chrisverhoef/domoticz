@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Let the process management of Linux take care of the restart so no root privileges are needed.
-if pkill domoticz
+if (pkill -x domoticz)
 then
     echo "Initiated the restart of the domoticz service"
 else
