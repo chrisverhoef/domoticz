@@ -19,7 +19,7 @@ if [ ${OS} = "darwin" ]; then
   sleep 15
   launchctl load /System/Library/LaunchAgents/com.domoticz.server.plist
 # Let the process management of Linux take care of the restart so no root privileges are needed.
-elif pkill domoticz
+elif (pkill -x domoticz)
 then
     echo "Initiated the restart of the domoticz service"
 else
